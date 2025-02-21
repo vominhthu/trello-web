@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box"
 import { Button, styled, TextField, Tooltip } from "@mui/material"
-import ModeSelect from "../ModeSelect"
+import ModeSelect from "../ModeSelect/ModeSelect"
 import AppIcons from "@mui/icons-material/Apps"
 import SvgIcon from "@mui/material/SvgIcon"
 import TrelloLogo from "~/assets/icons/trello-icon.svg?react"
@@ -11,6 +11,7 @@ import Starred from "./Menus/Starred"
 import Templates from "./Menus/Templates"
 import { HelpOutlineOutlined, NotificationsNoneOutlined } from "@mui/icons-material"
 import Profile from "./Menus/Profile"
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 
 const BoxVerticalCenter = styled(Box)(() => ({
   display: "flex",
@@ -28,7 +29,8 @@ function AppBar() {
           height: (theme) => theme.custom.appBarHeight,
           justifyContent: "space-between",
           gap: 2,
-          overflowX: 'auto'
+          overflowX: 'auto',
+          px: 2
         }}
       >
         <BoxVerticalCenter sx={{ gap: 2 }}>
@@ -61,7 +63,7 @@ function AppBar() {
               <Recent />
               <Starred />
               <Templates />
-              <Button variant="outlined">Create</Button>
+              <Button variant="outlined" startIcon={<LibraryAddIcon />}>Create</Button>
           </BoxVerticalCenter>
         </BoxVerticalCenter>
         <BoxVerticalCenter sx={{ gap: 1 }}>
