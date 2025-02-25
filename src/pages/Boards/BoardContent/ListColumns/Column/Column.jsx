@@ -16,8 +16,11 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import { Button } from "@mui/material";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCards from "./ListCards/ListCard";
+import PropTypes from "prop-types"
+import { mapOrder } from "~/utils/sorts";
 
-function Column() {
+
+function Column({ column }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -26,6 +29,8 @@ function Column() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const orderedCards = mapOrder(column?.cards, column.cardOrderIds, '_id')
+
   return (
     <>
       <Box
@@ -57,7 +62,7 @@ function Column() {
             }}
             variant="h6"
           >
-            Column Title
+            {column.title}
           </Typography>
           <Box>
             <Tooltip title="More options">
@@ -121,7 +126,7 @@ function Column() {
           </Box>
         </Box>
         {/** Board list cards */}
-        <ListCards />
+        <ListCards cards={orderedCards} />
         {/** Board column footer */}
         <Box
           sx={{
@@ -140,6 +145,9 @@ function Column() {
       </Box>
     </>
   );
+}
+Column.propTypes = {
+  column: PropTypes.object,
 }
 
 export default Column;

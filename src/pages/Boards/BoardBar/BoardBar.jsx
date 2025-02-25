@@ -9,9 +9,11 @@ import FilterListIcon from '@mui/icons-material/FilterList'
 import AvatarGroup from '@mui/material/AvatarGroup'
 import Avatar from '@mui/material/Avatar'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { capitalizeFirstLetter } from '~/utils/formatters'
 
 
-function BoardBar() {
+function BoardBar(props) {
+  const { board } = props;
   const BoxVerticalCenter = styled(Box)(() => ({
     display: "flex",
     alignItems: "center",
@@ -45,7 +47,7 @@ function BoardBar() {
             }
           }}
           icon={<DashboardIcon />} 
-          label="Dashboard Icon" 
+          label={board?.title}
           onClick={() => { }} 
         />
         <Chip
@@ -63,7 +65,7 @@ function BoardBar() {
             }
           }}
           icon={<VpnLockIcon />} 
-          label="Private/Public Workspace" 
+          label={capitalizeFirstLetter(board.type)} 
           onClick={() => { }} 
         />
         <Chip
