@@ -16,11 +16,29 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import { Button } from "@mui/material";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCards from "./ListCards/ListCard";
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 import { mapOrder } from "~/utils/sorts";
-
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 function Column({ column }) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: column._id, data: { ...column } });
+  const dndKitColumnStyle = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+    touchAction: "none", // for default sensor,
+    height: "100%",
+    opacity: isDragging ? 0.5 : undefined,
+    border: isDragging ? "1px solid #0984e3" : undefined,
+  };
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -29,11 +47,12 @@ function Column({ column }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const orderedCards = mapOrder(column?.cards, column.cardOrderIds, '_id')
+  const orderedCards = mapOrder(column?.cards, column.cardOrderIds, "_id");
 
   return (
-    <>
+    <div ref={setNodeRef} style={dndKitColumnStyle} {...attributes}>
       <Box
+        {...listeners}
         sx={{
           minWidth: "300px",
           maxWidth: "300px",
@@ -47,7 +66,7 @@ function Column({ column }) {
         {/** Board column header */}
         <Box
           sx={{
-            height: (theme) => (theme.custom.columnHeaderHeight),
+            height: (theme) => theme.custom.columnHeaderHeight,
             padding: 2,
             display: "flex",
             alignItems: "center",
@@ -127,6 +146,18 @@ function Column({ column }) {
         </Box>
         {/** Board list cards */}
         <ListCards cards={orderedCards} />
+        {orderedCards?.length === 0 && (
+          <Box
+            ref={setNodeRef}
+            {...attributes}
+            {...listeners}
+            sx={{
+              padding: 2,
+            }}
+          >
+            <Typography>No cards here</Typography>
+          </Box>
+        )}
         {/** Board column footer */}
         <Box
           sx={{
@@ -143,11 +174,11 @@ function Column({ column }) {
           </Tooltip>
         </Box>
       </Box>
-    </>
+    </div>
   );
 }
 Column.propTypes = {
   column: PropTypes.object,
-}
+};
 
 export default Column;
